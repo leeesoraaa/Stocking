@@ -1,11 +1,199 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>Stocking - 주가 예측 웹서비스</title>
+  <meta charset="UTF-8">
+  <title>📈 Stocking: 주식왕</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Pretendard', 'Segoe UI', sans-serif;
+      background: #f0f2f5;
+      color: #222;
+      margin: 0;
+      padding: 2em;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2b50a1;
+      margin-bottom: 0.2em;
+    }
+
+    p {
+      text-align: center;
+      color: #444;
+      margin: 0.2em 0 1em;
+    }
+
+    form {
+      text-align: center;
+      margin: 2em 0;
+    }
+
+    select, button {
+      padding: 0.6em 1em;
+      font-size: 1em;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: white;
+      margin: 0 0.5em;
+    }
+
+    button {
+      background-color: #2b50a1;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #1e3c85;
+    }
+
+    table {
+      width: 80%;
+      margin: 2em auto;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    th, td {
+      padding: 1em;
+      text-align: center;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f5f7fa;
+      font-weight: bold;
+      color: #333;
+    }
+
+    tr:hover {
+      background-color: #f1f4f8;
+    }
+
+    canvas {
+      display: block;
+      margin: 3em auto;
+      max-width: 90%;
+    }
+
+    @media (max-width: 768px) {
+      table {
+        width: 95%;
+      }
+
+      select, button {
+        width: 90%;
+        margin: 0.5em 0;
+      }
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Stocking</h1>
-    <p>주가 예측  서비스입니다.</p>
+  <h1>📈 Stocking: 주식왕</h1>
+  <p>주요 기업의 5일 간의 미래 주가를 예측해드립니다.</p>
+
+  <form method="get">
+    <select name="code" id="code">
+      <option value="005930" {% if code == '005930' %}selected{% endif %}>삼성전자</option>
+    </select>
+    <button type="submit">예측하기</button>
+  </form>
+
+  <h2 style="text-align:center;">📅 {{ company_name }} 5일 주가 예측 결과</h2>
+
+  {% if predictions %}
+  <table>
+    <tr>
+      <th>날짜</th>
+      <th>예측 종가</th>
+    </tr>
+    {% for date, row in predictions.items %}
+    <tr>
+      <td>{{ date }}</td>
+      <td>{{ row.Close }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p style="text-align:center;">예측 결과가 없습니다.</p>
+  {% endif %}
+
+  <canvas id="stockChart" style="width: 80%; height: 500px; display: block; margin: 3em auto;"></canvas>
+
+  <script>
+    const labels = {{ full_dates|safe }};
+    const data = {{ full_prices|safe }};
+    const totalLength = data.length;
+    const forecastLength = 5;
+    const boundary = totalLength - forecastLength;
+
+    const ctx = document.getElementById('stockChart').getContext('2d');
+
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: '종가',
+          data: data,
+          fill: true,
+          borderWidth: 2,
+          pointRadius: 3,
+          tension: 0.3,
+          borderColor: function(context) {
+            return context.dataIndex >= boundary ? '#e67e22' : '#2b50a1';
+          },
+          backgroundColor: function(context) {
+            return context.dataIndex >= boundary ? 'rgba(230, 126, 34, 0.2)' : 'rgba(43, 80, 161, 0.2)';
+          },
+          segment: {
+            borderColor: ctx => ctx.p0.parsed.y !== null && ctx.p0DataIndex >= boundary
+              ? '#e67e22'
+              : '#2b50a1',
+            backgroundColor: ctx => ctx.p0.parsed.y !== null && ctx.p0DataIndex >= boundary
+              ? 'rgba(230, 126, 34, 0.2)'
+              : 'rgba(43, 80, 161, 0.2)'
+          }
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#333' },
+            title: {
+              display: true,
+              text: '날짜',
+              color: '#333',
+              font: { size: 14 }
+            }
+          },
+          y: {
+            ticks: { color: '#333' },
+            title: {
+              display: true,
+              text: '종가 (₩)',
+              color: '#333',
+              font: { size: 14 }
+            }
+          }
+        }
+      }
+    });
+  </script>
+
 </body>
 </html>
