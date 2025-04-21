@@ -1,0 +1,39 @@
+# 👑 Stock + King = 주식왕
+
+5일간의 미래 주가를 예측하는 웹 서비스입니다.  
+삼성전자 등 주요 기업의 데이터를 기반으로, LSTM 딥러닝 모델을 통해 종가(Close) 예측 결과를 제공합니다.
+
+---
+
+## 📌 주요 기능
+
+- ✅ 실시간 데이터 기반 주가 예측
+- ✅ 5일간 종가(Close) 예측
+- ✅ LSTM + 외부 지표(DOW, NASDAQ, KOSPI 등) 활용
+- ✅ Django 기반 웹 인터페이스 제공
+- ✅ 기업별 모델 확장 가능
+
+---
+
+## 🧠 기술 스택
+
+| 구성 요소     | 기술                         |
+|--------------|------------------------------|
+| 백엔드       | Django 4.x                   |
+| 예측 모델     | LSTM (Keras/Tensorflow)      |
+| 데이터 수집   | FinanceDataReader            |
+| 정규화       | scikit-learn (StandardScaler)|
+| 시각화 (옵션) | matplotlib / Chart.js        |
+
+---
+
+## 📁 프로젝트 구조
+
+stocking/ ├── app/ │ ├── ml/ # 모델 및 스케일러 (.h5, .pkl) │ ├── services/ │ │ └── predictor.py # 예측 로직 │ ├── templates/ │ │ └── app/home.html # HTML 템플릿 │ ├── views.py, urls.py ├── config/ ├── manage.py ├── requirements.txt └── README.md
+
+## 📈 앞으로 할 일
+
+- [ ] 사용자 입력으로 기업 선택 기능
+- [ ] 실시간 예측 차트 시각화
+- [ ] 기업별 모델 자동 학습 스크립트 추가
+- [ ] Docker로 패키징 및 배포 준비
