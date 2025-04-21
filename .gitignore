@@ -1,9 +1,53 @@
-__pycache__/
+# -----------------------------
+# ✅ Python & Virtual Environment
+# -----------------------------
 *.pyc
-*.pkl
-*.h5
-.env
+*.pyo
+*.pyd
+__pycache__/
+*.env
 .venv/
+venv/
+ENV/
+env/
+
+# -----------------------------
+# ✅ Django
+# -----------------------------
 db.sqlite3
-.idea/
+*.log
+media/
+staticfiles/
+local_settings.py
+
+# -----------------------------
+# ✅ Jupyter Notebook
+# -----------------------------
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+*.ipynb_checkpoints/
+*.ipynb~   # 임시 파일
+
+# -----------------------------
+# ✅ Machine Learning Files
+# -----------------------------
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+*.ckpt
+*.pt
+*.onnx
+
+# -----------------------------
+# ✅ VSCode / IDE
+# -----------------------------
 .vscode/
+.idea/
+*.swp
+
+# -----------------------------
+# ✅ macOS / Windows
+# -----------------------------
+.DS_Store
+Thumbs.db

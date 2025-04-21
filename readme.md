@@ -19,13 +19,14 @@
 
 | 구성 요소     | 기술                         |
 |--------------|------------------------------|
-| 백엔드       | Django 4.x                   |
+| 백엔드       | Django                   |
 | 예측 모델     | LSTM (Keras/Tensorflow)      |
 | 데이터 수집   | FinanceDataReader            |
 | 정규화       | scikit-learn (StandardScaler)|
 | 시각화 (옵션) | matplotlib / Chart.js        |
 
 ---
+📘 모델 학습 과정은 [`notebooks/train_model.ipynb`](notebooks/train_model.ipynb) 참고
 
 ## 📈 앞으로 할 일
 
